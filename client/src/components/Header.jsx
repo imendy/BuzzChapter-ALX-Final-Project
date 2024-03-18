@@ -11,6 +11,8 @@ export default function Header() {
     color: "transparent",
   };
 
+  const path = useLocation().pathname;
+
   return (
     <Navbar className='border-b-2'>
       <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
@@ -53,20 +55,20 @@ export default function Header() {
         </div>
 
         <Navbar.Collapse>
-        <Navbar.Link>
+        <Navbar.Link active={path === '/'} as={'div'}>
                 <Link to='/'>
                    Home
                 </Link>
             </Navbar.Link>
 
-            <Navbar.Link>
+            <Navbar.Link active={path === '/about'} as={'div'}>
                 <Link to='/about'>
                     About
                 
                 </Link>
             </Navbar.Link>
 
-            <Navbar.Link>
+            <Navbar.Link active={path === '/projects'} as={'div'}>
                 <Link to='/projects'>
                     Projects
                 
