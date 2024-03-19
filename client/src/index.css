@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+    .border-gradient-cyan-blue-purple {
+        border-width: 4px 0 0;
+      border-style: solid;
+      border-image: linear-gradient(to right,  #0000FF, #00FFFF, #0000FF) 1;
+    }
+  }
