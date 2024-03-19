@@ -1,9 +1,10 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
-// import { FaMoon, FaSun } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
+import {FaSun, FaMoon} from 'react-icons/fa';
 
 export default function Header() {
   const gradientStyle = {
@@ -14,6 +15,8 @@ export default function Header() {
 
   const { currentUser } = useSelector((state) => state.user);
   const path = useLocation().pathname;
+  const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
 
   
 
@@ -41,12 +44,12 @@ export default function Header() {
       </Button>
       <div className='flex gap-2 md:order-2'>
         <Button
-          className='w-12 h-10 '
+          className='w-12 h-12 mr-2'
           color='gray'
           pill
-        //   onClick={() => dispatch(toggleTheme())}
+          onClick={() => dispatch(toggleTheme())}
         >
-          {/* {theme === 'light' ? <FaSun /> : <FaMoon />} */}
+          {theme === 'light' ? <FaMoon className='text-lg' /> : <FaSun className='text-lg' />}
         </Button>
 
         {currentUser ? (
