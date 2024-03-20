@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 
+body {
+  height: 100vh;
+}
+
+.ql-editor {
+  font-size: 1.05rem;
+}
+
 @layer utilities {
     .border-gradient-cyan-blue-purple {
         border-width: 4px 0 0;
