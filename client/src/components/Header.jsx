@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
+import { signoutSuccess } from '../redux/user/userSlice';
 
 import {FaSun, FaMoon} from 'react-icons/fa';
 
@@ -17,6 +18,23 @@ export default function Header() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
 
   
 
@@ -49,7 +67,8 @@ export default function Header() {
           pill
           onClick={() => dispatch(toggleTheme())}
         >
-          {theme === 'light' ? <FaMoon className='text-lg' /> : <FaSun className='text-lg' />}
+          {theme === 'light' ? <FaMoon className='text-lg' /> : <FaSun className='text-lg  text-yellow-300' />}
+
         </Button>
 
         {currentUser ? (
@@ -57,7 +76,7 @@ export default function Header() {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt='user' img={currentUser.googlePhotoUrl} rounded />
+              <Avatar alt='user' img={currentUser.profilePicture} rounded />
 
             }
           >
@@ -71,7 +90,7 @@ export default function Header() {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item >Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout} >Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to='/signin'>
