@@ -39,7 +39,7 @@ export default function Header() {
   
 
   return (
-    <Navbar className='border-b-2'>
+    <Navbar className='border-b-2 fixed top-0 left-0 w-full z-50'>
       <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
         Bu
         <span style={gradientStyle}>zz</span>
