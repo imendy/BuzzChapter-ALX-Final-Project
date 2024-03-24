@@ -1,11 +1,12 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
-
+import { useEffect, useState } from 'react';
 import {FaSun, FaMoon} from 'react-icons/fa';
+import {AiOutlineClose } from 'react-icons/ai'
 
 export default function Header() {
   const gradientStyle = {
@@ -17,7 +18,19 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { theme } = useSelector((state) => state.theme);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showInput, setShowInput] = useState(false);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   const handleSignout = async () => {
     try {
@@ -36,6 +49,23 @@ export default function Header() {
   };
 
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm', searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
+
+  const handleToggleInput = () => {
+    setShowInput(!showInput);
+  };
+
+  const handleClearInput = () => {
+    setShowInput(false);
+  };
+
   
 
   return (
@@ -46,20 +76,39 @@ export default function Header() {
         Chapter
       </Link>
 
-      <form >
+      <form onSubmit={handleSubmit}>
         <TextInput
           type='text'
           placeholder='Search...'
           rightIcon={AiOutlineSearch}
-           className='hidden lg:inline'
+          className='hidden min-[480px]:inline'
            sizing={'sm'}
-        //   value={searchTerm}
-        //   onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className='w-12 h-10 lg:hidden' color='gray' pill>
-        <AiOutlineSearch  className='text-xl'/>
+     
+
+
+
+<div style={{ position: 'relative' }}>
+      <Button className='w-12 h-10 min-[480px]:hidden' color='gray' pill onClick={handleToggleInput}>
+        {showInput ? <AiOutlineClose className='text-xl' onClick={handleClearInput} /> : <AiOutlineSearch className='text-xl' />}
       </Button>
+      {showInput && (
+        <div style={{ position: 'absolute', top: '100%', right: 90, width: '100%' }}>
+        <form onSubmit={handleSubmit}>
+        <input 
+            type="text" 
+            className="border-2 min-[480px]:hidden rounded-full border-indigo-500 focus:outline-none bg-indigo-500 text-white mt-4 placeholder-white" 
+            placeholder="Search..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </form>
+        </div>
+      )}
+    </div>
       <div className='flex gap-2 md:order-2'>
         <Button
           className='w-12 h-12 mr-2'
