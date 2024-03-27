@@ -68,7 +68,7 @@ export default function SignUp() {
 
       {/* right */}
 
-      <div className='flex-1'>
+      <div className='flex-1 mt-16'>
         <form className='flex flex-col gap-4' onSubmit={handleSubmit} >
           <div>
             <Label value='Username' />
